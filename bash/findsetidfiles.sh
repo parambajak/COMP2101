@@ -23,3 +23,13 @@ echo "Setuid files:"
 echo "============="
 find / -type f -executable -perm -4000 -ls 2>/dev/null | sort -k 3
 echo ""
+
+echo "Setgit files:"
+echo "============="
+find / -type f -executable -perm -2000 -ls 2>/dev/null | sort -k 5
+echo ""
+
+echo "Setuid files:"
+echo "============="
+find / -type f -exec du -h {} + 2>/dev/null | sort -h -r | head 10
+echo ""
