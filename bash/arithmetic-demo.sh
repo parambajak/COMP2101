@@ -25,9 +25,9 @@ echo "you entered $firstnum, $secondnum"
 echo ""
 
 sum=$(($firstnum + $secondnum))
-product = $(($firstnum * $secondnum))
-difference = $(($firstnum - $secondnum))
-remainder = $(($firstnum % $secondnum))
+product=$(($firstnum * $secondnum))
+difference=$(($firstnum - $secondnum))
+remainder=$(($firstnum % $secondnum))
 
 echo "the sum of the numbers is $sum "
 echo "the product of numbers is $product"
