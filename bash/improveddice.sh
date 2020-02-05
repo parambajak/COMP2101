@@ -20,13 +20,9 @@ echo "Choose the number"
 read range
 echo "choose minimum value"
 read bias
-# roll the dice and save the results
 echo "Rolling the dice"
 die1=$(( RANDOM % range + bias))
 die2=$(( RANDOM % range + bias))
-# display the results
 echo "Rolled $die1, $die2"
-# generating sum of outcome
 echo "The sum of outcome is" $(($die1+$die2))
-#generating average of outcome
 echo "The average of outcome is" $((($die1+$die2)/2))

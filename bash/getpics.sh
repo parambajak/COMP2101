@@ -24,9 +24,7 @@ The Pictures directory uses $(du -sh ~/Pictures|awk '{print $1}') space on the d
 EOF
 
 #downloading pics file in pictures directory
-test -f ~/pictures/pics.tgz || wget -q -o ~/pictures/pics.tgz http://zonzorp.net/ics.tgz
-
-
+test -f ~/pictures/pics.tgz || wget -q -o ~/pictures/pics.tgz http://zonzorp.net/pics.tgz
 
 # remove pics.tgz file after extracting it into ~/Pictures
 test -f ~/Pictures/pics.tgz && tar -xf ~/Pictures/pics.tgz -c ~/Pictures && rm ~/Pictures/pics.tgz
