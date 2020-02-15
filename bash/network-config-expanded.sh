@@ -1,82 +1,66 @@
 #!/bin/bash
-#
-# this script displays some host identification information for a Linux machine
-#
-# Sample output:
-#   Hostname      : zubu
-#   LAN Address   : 192.168.2.2
-#   LAN Name      : net2-linux
-#   External IP   : 1.2.3.4
-#   External Name : some.name.from.our.isp
-
-# the LAN info in this script uses a hardcoded interface name of "eno1"
-#    - change eno1 to whatever interface you have and want to gather info about in order to test the script
-
-# TASK 1: Dynamically identify the list of interface names for the computer running the script, and use a for loop to generate the report for every interface except loopback
-
-################
-# Data Gathering
-################
-# the first part is run once to get information about the host
-# grep is used to filter ip command output so we don't have extra junk in our output
-# stream editing with sed and awk are used to extract only the data we want displayed
-
-#####
-# Once per host report
-#####
-# we use the hostname command to get our system name
-my_hostname=$(hostname)
-
-# the default route can be found in the route table normally
-# the router name is obtained with getent
-default_router_address=$(ip r s default| cut -d ' ' -f 3)
-default_router_name=$(getent hosts $default_router_address|awk '{print $2}')
-
-# finding external information relies on curl being installed and relies on live internet connection
-external_address=$(curl -s icanhazip.com)
-external_name=$(getent hosts $external_address | awk '{print $2}')
-
-
-cat <<EOF
-System Identification Summary
-=============================
-Hostname      : $my_hostname
-Default Router: $default_router_address
-Router Name   : $default_router_name
-External IP   : $external_address
-External Name : $external_name
-EOF
-
-#####
-# End of Once per host report
-#####
-
-# the second part of the output generates a per-interface report
-# the task is to change this from something that runs once using a fixed value for the interface name to
-#   a dynamic list obtained by parsing the interface names out of a network info command like "ip"
-#   and using a loop to run this info gathering section for every interface found
-
-# the default version uses a fixed name and puts it in a variable
-#####
-# Per-interface report
-#####
-# define the interface being summarized
-interf=$(lshw -class network | awk '/logical name:/{print $3}')
-for w in "${interf[@]}"; do
-echo "$w"
-if [[ $w = lo* ]] ; then continue ; fi
-ipv4_address=$(ip a s $w | awk -F '[/ ]+' '/inet /{print $3}')
-ipv4_hostname=$(getent hosts $ipv4_address | awk '{print $2}')
-network_address=$(ip route list dev $w scope link | cut -d ' ' -f 1)
-network_number=$(cut -d / -f 1 <<<"$network_address")
-network_name=$(getent networks $network_number | awk '{print $1}')
-echo Interface $w:
-echo --------------------------------
-echo Address         : $ipv4_address
-echo Name            : $ipv4_hostname
-echo Network Address : $network_address
-echo Network Name    : $network_name
+# This script demonstrates how the shift command works
+# create an empty array to put the command line arguments into
+myargs=()
+verbosevar=0
+debugvar=0
+# loop through the command line arguments
+while [ $# -gt 0 ]; do
+  # tell the user how many things are left on the command line
+  echo "There are $# things left to process on the command line."
+  # add whatever is in $1 to the myargs array
+  echo "Myarg array contents ${myargs[@]}"
+  myargs+=("$1")
+  # tell the user what we did
+  echo "Added \'$1\' to the arguments array"
+  echo "Processing the value '$1'."
+  case $1 in
+  -h )
+   echo 'You added "-h" for help.'
+   echo 'Processing the "-h".'
+   echo "Choose -v for Varbose mode, -d for Debug mode and choose within 1 to 5."
+   ;;
+  -v )
+   echo 'You added "-v" for varbose.'
+   echo 'Processing the "-v".'
+   verbosevar=1
+   ;;
+  -d )
+   echo 'You added "-d" for debug.'
+   echo 'Processing the "-d".'
+   case "$2" in
+   [1-5] )
+    echo "You added the -d for debug level $2."
+    debugvar=$2
+    shift
+    ;;
+   *)
+    echo "Error: The debug mode should be between [1-5]. "
+    shift
+    esac
+    ;;
+  *)
+  errors=$1
+  echo "Error: unkown value found: $errors"
+  shift
+  ;;
+  esac
+  # each time through the loop, shift the arguments left
+  # this decrements the argument count for us
+  shift
+  # tell the user we shifted things
+  echo "Shifted command line, leaving $# things left to process."
+  echo "--------------------------"
+  # go back to the top of the loop to see if anything is left to work on
 done
-#####
-# End of per-interface report
-#####
+echo "Done"
+if [ $verbosevar = 1 ]; then
+  echo "Varbose mode is On."
+else
+  echo "Varbose mode is Off."
+fi
+if [ $debugvar -gt 0 ]; then
+  echo "Debug Mode is On with level $d."
+else
+  echo "Debug Mode is Off."
+fi
