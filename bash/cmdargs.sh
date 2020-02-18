@@ -1,6 +1,6 @@
 #!/bin/bash
 # This script demonstrates how the shift command works
-# create an empty array to put the command line arguments into
+# create an empty array to put the command line argumentss into
 myargs=()
 verbosevar=0
 debugvar=0

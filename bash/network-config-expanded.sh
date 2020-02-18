@@ -1,5 +1,5 @@
 #!/bin/bash
-# This script demonstrates how the shift command works
+# This script demonstrates how the shift command workss
 # create an empty array to put the command line arguments into
 myargs=()
 verbosevar=0
@@ -34,6 +34,7 @@ while [ $# -gt 0 ]; do
     debugvar=$2
     shift
     ;;
+
    *)
     echo "Error: The debug mode should be between [1-5]. "
     shift
