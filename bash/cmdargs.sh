@@ -60,7 +60,7 @@ else
   echo "Varbose mode is Off."
 fi
 if [ $debugvar -gt 0 ]; then
-  echo "Debug Mode is On with level $d."
+  echo "Debug Mode is On with level $debugvar."
 else
   echo "Debug Mode is Off."
 fi
